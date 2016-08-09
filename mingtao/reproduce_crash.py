@@ -10,7 +10,8 @@ s = sched.scheduler(time.time, time.sleep)
 x = 1
 
 def restart_smf():
-	print "restarting smf ...", x
+	global x
+	print "restarting smf ...%d... times" % x
 	subprocess.call("service smf stop && service smf start", shell=True)
 	x += 1
 
@@ -20,5 +21,6 @@ def do_something(sc):
 	restart_smf()
 	sc.enter(600, 1, do_something, (sc,))
 
+# restart smf every 10 minutes
 s.enter(600, 1, do_something, (s,))
 s.run()
